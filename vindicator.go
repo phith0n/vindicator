@@ -35,11 +35,11 @@ func NewVindicator(worker Worker, interval int) *Vindicator {
 func (v *Vindicator) Start(ctx context.Context) error {
 	v.SetRunning()
 	defer v.SetStopped()
-	v.bus.Publish("worker:start", v)
-	defer v.bus.Publish("worker:stop", v)
 
 	newCtx, cancel := context.WithCancel(ctx)
 	v.stopWorker = cancel
+	v.bus.Publish("worker:start", v)
+	defer v.bus.Publish("worker:stop", v)
 
 	if err := v.worker.Work(newCtx); err != nil {
 		v.bus.Publish("worker:error", v, err)
@@ -54,14 +54,14 @@ func (v *Vindicator) Monitor(ctx context.Context) {
 
 	newCtx, cancel := context.WithCancel(ctx)
 	v.stopMonitor = cancel
+	timer := time.NewTicker(time.Duration(v.interval) * time.Second)
+	defer timer.Stop()
 	for {
-		time.Sleep(time.Duration(v.interval) * time.Second)
-
 		select {
 		case <-newCtx.Done():
 			v.bus.Publish("monitor:stop", v)
 			return
-		default:
+		case <-timer.C:
 			if !v.worker.GetRunning() {
 				v.bus.Publish("monitor:interrupt", v)
 				go func() {
@@ -81,10 +81,10 @@ func (v *Vindicator) Stop() {
 
 	if v.stopWorker != nil {
 		v.stopWorker()
-	}
 
-	// block the Stop function until the worker is stopped
-	v.Wait()
+		// block the Stop function until the worker is stopped
+		v.Wait()
+	}
 }
 
 func (v *Vindicator) SetRunning() {

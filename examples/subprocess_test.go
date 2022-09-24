@@ -66,6 +66,4 @@ func TestSubprocess(t *testing.T) {
 
 	// stop the worker and the monitor manual
 	v.Stop()
-
-	time.Sleep(time.Second * 3)
 }

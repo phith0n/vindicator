@@ -47,7 +47,7 @@ implement:
 
 ```go
 type ProcessWorker struct {
-	isRunning bool
+    isRunning bool
 }
 
 // Work must be a blocking function
@@ -110,8 +110,6 @@ timer := time.NewTimer(time.Second * 10)
 
 // demonstrate how to stop the worker and the monitor manual
 v.Stop()
-
-time.Sleep(time.Second * 3)
 ```
 
 This example checks the process running status every 2 seconds, and stop it after 10 seconds.
@@ -125,8 +123,9 @@ process is working normally...
 process is working normally...
 process is working normally...
 process is working normally...
-stop worker
+process is working normally...
 stop monitor
+stop worker
 ```
 
 The full example code you can find [here](examples/subprocess_test.go).
@@ -141,7 +140,7 @@ Create a new `Vindicator`:
 v := vindicator.NewVindicator(&worker, 2)
 ```
 
-The first argument is your custom Worker implements, the second argument is the monitor cycle time, by seconds.
+The first argument is your custom `Worker` implements, the second argument is the monitor cycle time by seconds.
 
 ### Worker Interface
 

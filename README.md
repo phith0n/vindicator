@@ -8,7 +8,7 @@ network connection...
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [API Reference](#api-reference)
-  - [Vindicator](#vindicator) 
+  - [Vindicator](#vindicator-struct)
   - [Worker Interface](#worker-interface)
   - [Event](#event)
 - [FAQ](#faq)
@@ -133,7 +133,7 @@ The full example code you can find [here](examples/subprocess_test.go).
 
 ## API Reference
 
-### Vindicator
+### Vindicator Struct
 
 Create a new `Vindicator`:
 
@@ -155,7 +155,7 @@ type Worker interface {
 
 ### Event
 
-There are several events that you can listen and execute custom callback function:
+There are several events that you can listen and execute custom callback functions:
 
 - `monitor:start` trigger when monitor is started
 - `monitor:stop` trigger when monitor is stopped manual
@@ -165,7 +165,7 @@ There are several events that you can listen and execute custom callback functio
 - `worker:stop` trigger when worker is stopped
 - `worker:error` trigger when an error is raised by worker
 
-Register a listener:
+Use `Vindicator.On` to register a listener:
 
 ```go
 type VindicatorFn func(v *Vindicator, args ...interface{})

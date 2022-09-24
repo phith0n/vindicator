@@ -1,7 +1,7 @@
 # Vindicator
 
 Vindicator is a lightweight Golang library that is designed to hold and check any blocking function, e.g. subprocess,
-network connect...
+network connection...
 
 ## Contents
 
